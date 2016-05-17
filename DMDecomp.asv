@@ -71,47 +71,21 @@ function [ listV ] = DMDecomp( tabNoeud )
     end
     
     
-    %% Calcul de S0+ = S0 
+    %%Calcul de S0+ et S0-
     S0 = {};
     o=1;
     compteur =0;
     for (j = 1:length(U))
         for (i = 1:length(listCC))
            if (~strcmp(U{j}, listCC(i).src))
-               compteur = compteur + 1;
+               compteur = compteur +1;
            end
         end
-
-        if (compteur == length(listCC))
-           S0{o} = U{j};
-           o = o+1;
-        end
-        compteur = 0;
+        if (compteur == length(
     end
-    S0 = unique(S0);
     S0
     
     
-    %% Calcul de S0- = S1
-    
-    S1 = {};
-    o=1;
-    compteur =0;
-    for (j = 1:length(V))
-        for (i = 1:length(listCC))
-           if (~strcmp(V{j}, listCC(i).dst))
-               compteur = compteur + 1;
-           end
-        end
-
-        if (compteur == length(listCC))
-           S1{o} = V{j};
-           o = o+1;
-        end
-        compteur = 0;
-    end
-    S1 = unique(S1);
-    S1
     
     
     
