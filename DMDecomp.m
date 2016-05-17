@@ -5,11 +5,11 @@ function [ listV ] = DMDecomp( tabNoeud )
     % Trouver U
     U = {};
     for ( i = 1:length(tabNoeud))
-        if (strfind(tabNoeud{i,2},'+') ~= 0)
+        if (strfind(tabNoeud{i}.src,'+') ~= 0)
             if (length(U) == 0)
-                U{1} = tabNoeud{i,2};
+                U{1} = tabNoeud{i}.src;
             else
-                U{length(U)+1} = tabNoeud{i,2};
+                U{length(U)+1} = tabNoeud{i}.src;
             end
         end
     end
@@ -17,11 +17,11 @@ function [ listV ] = DMDecomp( tabNoeud )
     % Trouver V
     V = {};
     for ( i = 1:length(tabNoeud))
-        if (strfind(tabNoeud{i,3},'-') ~= 0)
+        if (strfind(tabNoeud{i}.dst,'-') ~= 0)
             if (length(V) == 0)
-                V{1} = tabNoeud{i,3};
+                V{1} = tabNoeud{i}.dst;
             else
-                V{length(V)+1} = tabNoeud{i,3};
+                V{length(V)+1} = tabNoeud{i}.dst;
             end
         end
     end
@@ -38,11 +38,11 @@ function [ listV ] = DMDecomp( tabNoeud )
     %% Calcul d'un couplage complet epsilonM
     %Pour U : 
     for (i = 1:length(U))
-       for (j = 1: size(totArc,1))
+       for (j = 1:length(totArc))
 
-          if (strcmp(U{i},totArc{j,2}))
+          if (strcmp(U{i},totArc{j}.src))
               cmpTmp = cmpTmp+1;
-              varTmp(p) = Ark(totArc{j,1},totArc{j,2},totArc{j,3},totArc{j,4});
+              varTmp(p) = Ark(totArc{j}.color,totArc{j}.src,totArc{j}.dst,totArc{j}.oriented);
           end
        end
        if (cmpTmp == 1)
@@ -51,13 +51,12 @@ function [ listV ] = DMDecomp( tabNoeud )
        end
        cmpTmp = 0;
     end
-    
    %Pour V : 
     for (i = 1:length(V))
-       for (j = 1: size(totArc,1))
-          if (strcmp(V{i},totArc{j,3}))
+       for (j = 1: length(totArc))
+          if (strcmp(V{i},totArc{j}.dst))
               cmpTmp = cmpTmp+1;
-              varTmp(p) = Ark(totArc{j,1},totArc{j,2},totArc{j,3},totArc{j,4});
+              varTmp(p) = Ark(totArc{j}.color,totArc{j}.src,totArc{j}.dst,totArc{j}.oriented);
           end
        end
        if (cmpTmp == 1)
@@ -112,6 +111,19 @@ function [ listV ] = DMDecomp( tabNoeud )
     end
     S1 = unique(S1);
     S1
+    
+    %% Calcul de Vinfp
+    
+    Vinfp = {};
+    for (i = 1:length(U))
+       for (j = 1:length(S1))
+           
+           end
+    end
+    
+    
+    
+    
     
     
     
