@@ -3,6 +3,7 @@ function [ res ] = couplageCompletTest( A )
     tabNoeud = {A{1,2}};
     length(tabNoeud);
     compt = 0;
+    res =1;
     
     %% Recupère tout les noeuds du graph
     for i = 1:n
@@ -55,22 +56,26 @@ function [ res ] = couplageCompletTest( A )
  %% Algorithme du couplage complet
     X = {};
     nb = 0;
-    for (l = 1:length(U))
-        X{l} = U{l};
-        for (i = 1:length(A))
-            for (j = 1:length(X))
-                for (k = 1:length(V))
-                    if (strcmp(A{i,2},X{j}) && strcmp(A{i,3},V{k}))
-                        nb = nb+1;
+    Adj = {};   %Liste des sommets adjacents
+    
+        for (l = 1:length(U))
+            X{l} = U{l};
+                for (j = 1:length(X))
+                    for (i = 1:size(A,1))
+                        for (k = 1:length(V))
+                            if (strcmp(A{i,2},X{j}) && strcmp(A{i,3},V{k})) 
+                                Adj{nb+1} = V{k}
+                                nb = nb+1;
+                            end
+                        end
                     end
                 end
-            end
+            if (length(Adj) ~= length(X))
+                res = 0;
+            else
+                Adj = {};
+                nb = 0;
+            end 
         end
-        if (nb < length(V))
-            res = 0;
-            break;
-        end
-    end
-    res = 1;
 end
 
