@@ -26,7 +26,7 @@ function [ listV ] = DMDecomp( tabNoeud )
         end
     end
     
-    
+    %% Variables
     %tab = le tableau de tous les arcs
     %U = ensemble des V+
     %V = ensemble des V-
@@ -43,6 +43,7 @@ function [ listV ] = DMDecomp( tabNoeud )
           if (strcmp(U{i},totArc{j}.src))
               cmpTmp = cmpTmp+1;
               varTmp(p) = Ark(totArc{j}.color,totArc{j}.src,totArc{j}.dst,totArc{j}.oriented);
+              saveIndice(p) = j;
           end
        end
        if (cmpTmp == 1)
@@ -51,26 +52,34 @@ function [ listV ] = DMDecomp( tabNoeud )
        end
        cmpTmp = 0;
     end
+    
+    
    %Pour V : 
     for (i = 1:length(V))
        for (j = 1: length(totArc))
           if (strcmp(V{i},totArc{j}.dst))
               cmpTmp = cmpTmp+1;
               varTmp(p) = Ark(totArc{j}.color,totArc{j}.src,totArc{j}.dst,totArc{j}.oriented);
+              saveIndice(p) = j;
           end
        end
        if (cmpTmp == 1)
-          p = p+1;
+           p = p+1;
        end
        cmpTmp = 0;
     end
     for (n = 1:length(varTmp)-1)
         listCC(n) = varTmp(n);
-        listCC(n);
+        listCC(n)
+    end
+    saveIndice = unique(saveIndice)
+    tmpArk = totArc;
+
+    for ( p = 1:length(saveIndice))
+        tmpArk(p) = []; %tmpArk est la liste des arcs sans ceux qui font parti du CC 
     end
     
-    
-    %% Calcul de S0+ = S0 
+    %% Calcul de S0+ = S0
     S0 = {};
     o=1;
     compteur =0;
@@ -88,7 +97,7 @@ function [ listV ] = DMDecomp( tabNoeud )
         compteur = 0;
     end
     S0 = unique(S0);
-    S0
+    S0;
     
     
     %% Calcul de S0- = S1
@@ -110,22 +119,73 @@ function [ listV ] = DMDecomp( tabNoeud )
         compteur = 0;
     end
     S1 = unique(S1);
+    S1;
+    
+    %Ajustement de listCC
+    
+    for (i = 1:length(S0))
+       for (j = 1 : length(S1))
+           for (k = 1:length(tmpArk))
+                if (strcmp(S0{i},tmpArk{k}.src) && strcmp(S1{j},tmpArk{k}.dst))
+                   listCC(end+1) = Ark(tmpArk{k}.color,tmpArk{k}.src,tmpArk{k}.dst,tmpArk{k}.oriented);
+                   S0(i) = []
+                   S1(j) = []
+                end
+                if (length(S0) == 0 || length(S1) == 0)
+                   break 
+                end
+            end
+       end
+    end
+    S0
     S1
     
-    %% Calcul de Vinfp
+    %% Calcul de V0+ = V0
     
-    Vinfp = {};
+    V0 = S0;
     for (i = 1:length(U))
-       for (j = 1:length(S1))
-           
+       for (j = 1:length(tmpArk))
+           if (strcmp(U{i},tmpArk{j}.src))
+               for (k = 1:length(S0))
+                   if (strcmp(S0{k},U{i}))
+                       V0{end+1}     = U{i};
+                   end
+               end
            end
+       end
     end
     
+    V0 = unique(V0)
     
     
     
+    %% Calcul de V0- = V1
+    V1 = {};
+    for (i = 1:length(V))
+       for (j = 1:length(tmpArk))
+           if (strcmp(V{i},tmpArk{j}.dst))
+               for (k = 1:length(S1))
+                   if (strcmp(S1{k},V{i}))
+                       V1{end+1}     = V{i};
+                   end
+               end
+           end
+       end
+    end
     
+    V1 = unique(V1)
     
-    
+    %% Union de V0+ et V0-
+    V0u = {};
+    for (i = 1:length(V0))
+        for (j = 1:length(V1))
+            for (k = 1:length(tmpArk))
+                if (strcmp(V0{i},tmpArk{k}.src) && strcmp(V1{j},tmpArk{k}.dst))
+                    V0u{end+1} = Ark(tmpArk{k}.color,tmpArk{k}.src,tmpArk{k}.dst,tmpArk{k}.oriented);
+                end
+            end
+        end
+    end
+    V0u{1}
 end
 
