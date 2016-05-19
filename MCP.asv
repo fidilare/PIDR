@@ -1,0 +1,17 @@
+function [ res ] = MCP( B )
+    %d'après la proposition 5 page 96: MC(B) <=> Expr(V+,E*) = 'true'
+	%Avec E* étant l'ensemble des arcs intra-classes après DM Decomposition
+    res = '';
+    DMBtmp = {}
+    %Calcul V+ et V-
+    U = calculU(B);
+    V = calculV(B);
+    DMB = DMDecomp(B);
+    for (i = 1:length(DMB))
+       
+    DMBtmp{end+1} = DMB{3}
+    
+    %res = Expr(U,V,DMB{2});
+
+end
+

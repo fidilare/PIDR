@@ -1,31 +1,12 @@
 function [ listV ] = DMDecomp( tabNoeud )
 %%Fonction qui fait une DM decomposition
 
-     %% Algorithme de la propriété
     % Trouver U
-    U = {};
-    for ( i = 1:length(tabNoeud))
-        if (strfind(tabNoeud{i}.src,'+') ~= 0)
-            if (length(U) == 0)
-                U{1} = tabNoeud{i}.src;
-            else
-                U{length(U)+1} = tabNoeud{i}.src;
-            end
-        end
-    end
-    U = unique(U);
+    U = calculU(tabNoeud);
     % Trouver V
-    V = {};
-    for ( i = 1:length(tabNoeud))
-        if (strfind(tabNoeud{i}.dst,'-') ~= 0)
-            if (length(V) == 0)
-                V{1} = tabNoeud{i}.dst;
-            else
-                V{length(V)+1} = tabNoeud{i}.dst;
-            end
-        end
-    end
-    V = unique(V);
+    V = calculV(tabNoeud);
+    
+    
     %% Variables
     %tab = le tableau de tous les arcs
     %U = ensemble des V+
@@ -97,12 +78,6 @@ function [ listV ] = DMDecomp( tabNoeud )
     %% Calcul de V0+ = V0
     
     V0 = S0;
-    totArc{:};
-    U;
-    connIter(S0,U,totArc);
-    V;
-    connIter(S0,V,totArc);
-    BM{:};
     for (i = 1:length(U))
        for (j = 1:length(S0))
            for (k = 1:length(totArc))
@@ -114,7 +89,7 @@ function [ listV ] = DMDecomp( tabNoeud )
            end
        end
     end
-    V0= unique(V0)
+    V0= unique(V0);
     
     cmpt = 0;
     V0tmp = {};
@@ -142,14 +117,13 @@ function [ listV ] = DMDecomp( tabNoeud )
            for (k = 1:length(totArc))
                for (l = 1:length(BM))
                     if (isequal(Ark('-',S0{j},V{i},1),totArc{k}) && isequal(Ark('-',V{i},S0{j},1),BM{l}))
-                        BM{l};
                         V1{end+1}=V{j};
                     end
                end
            end
        end
     end    
-    V1 = unique(V)
+    V1 = unique(V);
     
     cmpt = 0;
     V1tmp = {};
@@ -185,8 +159,7 @@ function [ listV ] = DMDecomp( tabNoeud )
     %% Calcul de Vinf+ = Vinf
     
     Vinf = {};
-    U
-    resVinf = connIter(U,S1,totArc)
+    resVinf = connIter(U,S1,totArc);
     for (i = 1:length(resVinf))
        if (resVinf(i) == 1)
           Vinf{end +1} = U{i}; 
@@ -208,19 +181,17 @@ function [ listV ] = DMDecomp( tabNoeud )
        cmpt = 0;
     end
     
-    Vinf = Vinftmp
+    Vinf = Vinftmp;
         
     %% Calcul de Vinf- = Vinf1
     
     Vinf1 = S1;
-    V;
-    resVinf1 = connIter(V,S1,totArc)
+    resVinf1 = connIter(V,S1,totArc);
     for (i = 1:length(resVinf1))
        if (resVinf1(i) == 1)
           Vinf1{end +1} = U{i}; 
        end
     end
-    S1;
     Vinf1 = unique(Vinf1);
     % on inverse pour faire correspondre à BM(V+,V-,Ebarre)
     cmpt = 0;
@@ -237,7 +208,7 @@ function [ listV ] = DMDecomp( tabNoeud )
        cmpt = 0;
     end
     
-    Vinf1 = Vinftmp1
+    Vinf1 = Vinftmp1;
     %% Calcul Vinfu = Vinf U Vinf1
     
     Vinfu = {};
@@ -258,7 +229,7 @@ function [ listV ] = DMDecomp( tabNoeud )
     for (j = 1:length(BM))
         for (i = 1:length(Vinfu))
             if (isequal(BM{j},Vinfu{i}))
-                cmpt = cmpt+1
+                cmpt = cmpt+1;
             end            
         end
         if (cmpt == 0)
@@ -313,6 +284,6 @@ function [ listV ] = DMDecomp( tabNoeud )
     end
         
      Vi{:};
-    listV = {V0u Vinftotal Vi{:}};
+    listV = {V0u Vinftotal {Vi{:}}};
 end
 
