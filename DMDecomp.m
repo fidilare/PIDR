@@ -1,12 +1,11 @@
 function [ listV ] = DMDecomp( tabNoeud )
 %%Fonction qui fait une DM decomposition
 
+     %% Algorithme de la propriété
     % Trouver U
     U = calculU(tabNoeud);
     % Trouver V
-    V = calculV(tabNoeud);
-    
-    
+    V =calculV(tabNoeud); 
     %% Variables
     %tab = le tableau de tous les arcs
     %U = ensemble des V+
@@ -76,7 +75,6 @@ function [ listV ] = DMDecomp( tabNoeud )
     S1 = unique(S1);
     
     %% Calcul de V0+ = V0
-    
     V0 = S0;
     for (i = 1:length(U))
        for (j = 1:length(S0))
@@ -111,7 +109,7 @@ function [ listV ] = DMDecomp( tabNoeud )
     
     %% Calcul de V0- = V1
     V1 = {};
-    connIter(V, S1,totArc);
+    connIter1(V, S1,totArc);
     for (i = 1:length(V))
        for (j = 1:length(S0))
            for (k = 1:length(totArc))
@@ -159,7 +157,7 @@ function [ listV ] = DMDecomp( tabNoeud )
     %% Calcul de Vinf+ = Vinf
     
     Vinf = {};
-    resVinf = connIter(U,S1,totArc);
+    resVinf = connIter1(U,S1,totArc);
     for (i = 1:length(resVinf))
        if (resVinf(i) == 1)
           Vinf{end +1} = U{i}; 
@@ -186,7 +184,7 @@ function [ listV ] = DMDecomp( tabNoeud )
     %% Calcul de Vinf- = Vinf1
     
     Vinf1 = S1;
-    resVinf1 = connIter(V,S1,totArc);
+    resVinf1 = connIter1(V,S1,totArc);
     for (i = 1:length(resVinf1))
        if (resVinf1(i) == 1)
           Vinf1{end +1} = U{i}; 
@@ -242,7 +240,6 @@ function [ listV ] = DMDecomp( tabNoeud )
             Vinftotal{i}.src(end+1) = '+';
             Vinftotal{i}.dst(end+1) = '-';
     end
-    Vinftotal{:};
     
     %% Calcul des composantes connexes et extractions des Vi
     cmpt = 0;
@@ -284,6 +281,5 @@ function [ listV ] = DMDecomp( tabNoeud )
     end
         
      Vi{:};
-    listV = {V0u Vinftotal {Vi{:}}};
+    listV = {V0u Vinftotal Vi{:}};
 end
-

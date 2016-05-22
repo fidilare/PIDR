@@ -1,8 +1,9 @@
 function [ res ] = connIter(X,Y,A)
 %% La fonction retourne un 1 si la src i de X est connecté à au moins 1 éléments de Y, 0 sinon
-    
+
     res = zeros(1,length(X));
 
+    
     tabsrc=X;
     %nombre d'arcs
     n=length(A);
