@@ -44,20 +44,20 @@ function [ res ] = connIter(X,Y,A)
     lim = 0;
     %% recherche d'un chemin
     while (lim <= n && p <= length(X))
-        for (i=1:length(X))
-            for (k = 1:length(A))
-                if (strcmp(A{k}.src,X{i}))
-                    for (j=1:length(Y))
+        for (k = 1:length(A))
+            for (i=1:length(X))
+               for (j=1:length(Y))
+                    if (strcmp(A{k}.src,X{i}))
                         if (strcmp(A{k}.dst,Y{j}))
                             res(p) = 1;
-                        else
-                            X{i} = A{k}.dst;
+                            p = p+1;
                         end
                     end                   
-                end
+               end
+                        X{i} = A{k}.dst;
             end
-            p = p+1;
         end
         lim = lim+1;
+        p = p+1;
     end
 end
