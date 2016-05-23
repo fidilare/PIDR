@@ -1,12 +1,15 @@
-function [ res ] = connIter(X,Y,A)
+function [ res ] = connIter1(X,Y,A)
 %% La fonction retourne un 1 si la src i de X est connecté à au moins 1 éléments de Y, 0 sinon
-
     res = zeros(1,length(X));
-
-    
     tabsrc=X;
+    count=0;
+    p=1;
+    tabtmp=tabsrc;
+    i=0;
     %nombre d'arcs
     n=length(A);
+    
+     count=0;
 %     %% verifier que la source demandée est bien dans source d'un arc
 %     for l=1:length(X)
 %         for m=1:n
@@ -42,23 +45,33 @@ function [ res ] = connIter(X,Y,A)
    
 
     p = 1;
-    lim = 0;
     %% recherche d'un chemin
-    while (lim <= n && p <= length(X))
-        for (i=1:length(X))
-            for (k = 1:length(A))
-                if (strcmp(A{k}.src,X{i}))
-                    for (j=1:length(Y))
-                        if (strcmp(A{k}.dst,Y{j}))
+    lim =0;
+    while lim<=n 
+        for j=1:length(tabtmp)
+            for i=1:n
+                if (strcmp(tabtmp{j},A{i}.src))
+                    for k=1:length(Y)
+                        if strcmp(A{i}.dst,Y{k})
                             res(p) = 1;
-                        else
-                            X{i} = A{k}.dst;
                         end
-                    end                   
+                    end
                 end
             end
-            p = p+1;
+            if (p < length(X))
+                if (res(p) == 0)
+                       tabtmp{end+1}=A{i}.dst;
+                       tabtmp = unique(tabtmp);
+                       p = p+1;
+                else
+                       p = p+1;
+                end
+            else
+                break
+            end
         end
-        lim = lim+1;
+        lim = lim +1;
     end
-end
+    
+end 
+
