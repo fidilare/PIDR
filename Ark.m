@@ -16,12 +16,7 @@ classdef Ark
             obj.dst = dst;
             obj.oriented = oriented;
         end
-         
-        
-        
-        
         
     end
     
 end
-
