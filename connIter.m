@@ -1,64 +1,16 @@
 function [ res ] = connIter(X,Y,A)
-%% La fonction retourne un 1 si la src i de X est connecté à au moins 1 éléments de Y, 0 sinon
+%% Fonction qui retourne si tous les éléments de X sont connecté à au moins un élément de Y dans A
 
-    res = zeros(1,length(X));
-
+    res = {};
     
-    tabsrc=X;
-    %nombre d'arcs
-    n=length(A);
-%     %% verifier que la source demandée est bien dans source d'un arc
-%     for l=1:length(X)
-%         for m=1:n
-%             if strcmp(X{l},A{m}.src)
-%                 count=count+1;
-%             end
-%         end
-%         
-%         if count == 0
-%             disp('Attention, une des sources demandées n est pas source d un arc')
-%             res = -1;
-%             return
-%         else
-%             count=0;
-%         end
-%     end
-%     
-%     %% verifier que la destination demandée est bien dans les destinations
-%     for l=1:length(Y)
-%         for m=1:n
-%             if strcmp(Y{l},A{m}.dst)
-%                 count=count+1;
-%             end
-%         end
-%         if count == 0
-%              disp('Attention, une des Destinations demandées n est pas destinations d un arc')
-%              res = -1;
-%              return
-%         else
-%             count = 0;
-%         end
-%     end
-   
-
-    p = 1;
-    lim = 0;
-    %% recherche d'un chemin
-    while (lim <= n && p <= length(X))
-        for (i=1:length(X))
-            for (k = 1:length(A))
-                if (strcmp(A{k}.src,X{i}))
-                    for (j=1:length(Y))
-                        if (strcmp(A{k}.dst,Y{j}))
-                            res(p) = 1;
-                        else
-                            X{i} = A{k}.dst;
-                        end
-                    end                   
-                end
+    for (i = 1:length(X))
+        for (j = 1:length(Y))
+            res{i} = connIter2(X{i},Y{j},A);
+            if (res{i} ==1)
+                break
             end
-            p = p+1;
         end
-        lim = lim+1;
     end
+
+
 end
