@@ -14,22 +14,19 @@ function [ res ] = Expr( U, E )
         end
         if (length(U) ~= 1)
             U = U(2:end);
-            for (k = 1:length(a))
-                if (length(a) == 1)
-                    res = strcat(res,printArc(a{k}));
-                else
-                    res = strcat(res,'U [',printArc(a{k}));
-                end
+            res = strcat(res,printArc(a{1}));
+            for (k = 2:length(a))
+                    res = strcat(res,'OU [',printArc(a{k}));
             end
-            res = strcat(res,'& [',Expr(U,E),']');
+            res = strcat(res,'ET [',Expr(U,E),']');
         else
             U = {};
             for (k = 1:length(a))
                 res = strcat(res,printArc(a{k}));
             end
-            res = strcat(res,']');
+                res = strcat(res,']');
         end
     end
-    
+
 end
 
