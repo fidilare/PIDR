@@ -161,7 +161,7 @@ function [ listV ] = DMDecomp( tabNoeud )
     %% Calcul de Vinf+ = Vinf
     
     Vinf = {};
-    resVinf = connIter(U,S1,totArc)
+    resVinf = connIter(U,S1,totArc);
     for (i = 1:length(resVinf))
        if (resVinf{i} == 1)
           Vinf{end +1} = U{i}; 
@@ -169,41 +169,48 @@ function [ listV ] = DMDecomp( tabNoeud )
     end
     Vinf = unique(Vinf)
     
-    
+    cmpt = 0;
     Vinftmp = {};
-    BM{:};
-    for (j = 1 : length(Vinf))
-        for (i = 1:length(BM))
-          if (strcmp(BM{i}.src,Vinf{j}))
-                Vinftmp{end +1} = Vinf{j};
+    for (i = 1:length(U))
+       for (j = 1 : length(Vinf))
+          if (~strcmp(U{i},Vinf{j}))
+               cmpt = cmpt +1;
           end
-        end
+       end
+       if (cmpt == length(Vinf))
+           Vinftmp{end +1} = U{i};
+       end
+       cmpt = 0;
     end
     
-    Vinf = Vinftmp
+    Vinf = Vinftmp;
         
     %% Calcul de Vinf- = Vinf1
     
     Vinf1 = S1;
     resVinf1 = connIter(V,S1,totArc);
     for (i = 1:length(resVinf1))
-       if (resVinf{i} == 1)
-          Vinf{end +1} = V{i}; 
+       if (resVinf1(i == 1)
+          Vinf1{end +1} = U{i}; 
        end
     end
-    Vinf1 = unique(Vinf1)
-%     % on inverse pour faire correspondre à BM(V+,V-,Ebarre)
-%     cmpt = 0;
-%     Vinftmp1 = {};
-%     for (j = 1 : length(Vinf1))
-%         for (i = 1:length(BM))
-%           if (strcmp(BM{i}.src,Vinf1{j}))
-%                 Vinftmp1{end +1} = Vinf1{j};
-%           end
-%         end
-%     end
+    Vinf1 = unique(Vinf1);
+    % on inverse pour faire correspondre à BM(V+,V-,Ebarre)
+    cmpt = 0;
+    Vinftmp1 = {};
+    for (i = 1:length(V))
+       for (j = 1 : length(Vinf1))
+          if (~strcmp(V{i},Vinf1{j}))
+               cmpt = cmpt +1;
+          end
+       end
+       if (cmpt == length(Vinf1))
+           Vinftmp1{end +1} = V{i};
+       end
+       cmpt = 0;
+    end
     
-%     Vinf1 = Vinftmp1
+    Vinf1 = Vinftmp1;
     %% Calcul Vinfu = Vinf U Vinf1
     
     Vinfu = {};

@@ -6,7 +6,7 @@ function [ res ] = Expr( U, E )
         disp('BLBLBL')
         return
     end
-    U;
+    U
     a = chercheArc(E,U{1});
     if (~isempty(a))
         for (j = 1:length(a))
