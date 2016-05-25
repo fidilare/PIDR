@@ -14,7 +14,7 @@ function [printBool] = testTwizyCommandA(list)
     Alist{:};
     V = calculV(Alist);
 
-    res = DMDecomp('A',list);
+    res = DMDecomp('A',list)
     printBool = '';
     resVi = {};
     for (i = 3:length(res))
@@ -36,12 +36,11 @@ function [printBool] = testTwizyCommandA(list)
                 if (strcmp(res{i}{j}.dst(1:end-1),resVi{k}.dst(1:end-1)))
                     printBool = strcat(printBool,'[',printArc(res{i}{j}),'OU',printArc(resVi{k}),']','ET');
                     res{i}{j};
-                    printTmp = supprElement(printTmp,res{i}{j})
+                    printTmp = supprElement(printTmp,res{i}{j});
                 end
             end
         end
     end
-        printTmp
         for (i = 1:length(printTmp))
             printBool = strcat(printBool,printArc(printTmp{i}),'ET'); 
         end

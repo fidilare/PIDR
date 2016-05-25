@@ -310,6 +310,9 @@ function [ listV ] = DMDecomp(entree, tabNoeud )
         Vim = unique(Vim);
     end
     %Les Vi maintenant
+    
+    S0
+    S1
 
     for (i = 1:length(Vip))
         for (j=1:length(totArc))
