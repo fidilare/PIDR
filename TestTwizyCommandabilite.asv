@@ -1,0 +1,9 @@
+%%Test des commandabilité
+
+clear
+ScriptGraphTwizy;
+
+disp(strcat('Test de commaTestTwizyCommandA(list));
+
+
+

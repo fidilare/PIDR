@@ -37,7 +37,7 @@ function [ listV ] = DMDecomp( tabNoeud )
             BM = couplageC(totArc,i+1);
         end
     end
-    BM = uniqueArc(BM)
+    BM = uniqueArc(BM);
     BM{:}
     %% Calcul de S0+ = S0
 
@@ -161,37 +161,25 @@ function [ listV ] = DMDecomp( tabNoeud )
     %% Calcul de Vinf+ = Vinf
     
     Vinf = {};
-    resVinf = connIter(U,S1,totArc)
-    for (i = 1:length(resVinf))
-       if (resVinf{i} == 1)
-          Vinf{end +1} = U{i}; 
-       end
-    end
-    Vinf = unique(Vinf)
-    
-    
-    Vinftmp = {};
-    BM{:};
-    for (j = 1 : length(Vinf))
-        for (i = 1:length(BM))
-          if (strcmp(BM{i}.src,Vinf{j}))
-                Vinftmp{end +1} = Vinf{j};
-          end
+    for (i = 1:length(U))
+        for (j = 1:length(S1))
+            if (connIter2(U{i},S1{j},totArc) == 1 && connIter2(S1{j},U{i},BM) == 1)
+               Vinf{end+1} = U{i}; 
+            end
         end
     end
-    
-    Vinf = Vinftmp
-        
+    Vinf 
     %% Calcul de Vinf- = Vinf1
     
-    Vinf1 = S1;
-    resVinf1 = connIter(V,S1,totArc);
-    for (i = 1:length(resVinf1))
-       if (resVinf{i} == 1)
-          Vinf{end +1} = V{i}; 
-       end
+    Vinf1 = {};
+    for (i = 1:length(V))
+        for (j = 1:length(S1))
+            if (connIter2(V{i},S1{j},totArc) == 1 && connIter2(S1{j},V{i},BM) == 1)
+               Vinf1{end+1} = V{i}; 
+            end
+        end
     end
-    Vinf1 = unique(Vinf1)
+    Vinf1 = union(Vinf1,S1);
 %     % on inverse pour faire correspondre à BM(V+,V-,Ebarre)
 %     cmpt = 0;
 %     Vinftmp1 = {};
@@ -202,7 +190,7 @@ function [ listV ] = DMDecomp( tabNoeud )
 %           end
 %         end
 %     end
-    
+%     
 %     Vinf1 = Vinftmp1
     %% Calcul Vinfu = Vinf U Vinf1
     
@@ -210,16 +198,16 @@ function [ listV ] = DMDecomp( tabNoeud )
     for (i = 1:length(Vinf))
         for (j = 1:length(Vinf1))
             for (k = 1:length(totArc))
-                if (strcmp(Vinf{i},totArc{k}.src) && strcmp(Vinf1{j},totArc{k}.dst))
+                if (strcmp(Vinf{i},totArc{k}.dst) && strcmp(Vinf1{j},totArc{k}.src))
                     Vinfu{end+1} = Ark(totArc{k}.color,Vinf{i},Vinf1{j},totArc{k}.oriented);
                 end
             end
         end
     end
-    Vinfu{:};
+
     % On ajoute BM pour avoir le Vinf total
 
-    Vinftotal = Vinfu;
+    Vinftotal = Vinfu
     cmpt = 0;
     for (j = 1:length(BM))
         for (i = 1:length(Vinfu))
@@ -232,12 +220,12 @@ function [ listV ] = DMDecomp( tabNoeud )
         end
         cmpt=0;
     end
-    BMbis = Vinftotal;
+    BMbis = Vinftotal
     for (i = 1: length(Vinftotal))
             Vinftotal{i}.src(end+1) = '+';
             Vinftotal{i}.dst(end+1) = '-';
     end
-    Vinftotal{:};
+    Vinftotal{:}
     %% Calcul des composantes connexes et extractions des Vi
 
    totArc2 = {};
@@ -262,7 +250,7 @@ function [ listV ] = DMDecomp( tabNoeud )
           end
        end
     end
-    Vi;
+    Vi
     cmpt = 0;
     Vip = {};
     Vim = {};

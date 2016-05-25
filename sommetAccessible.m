@@ -3,12 +3,11 @@ function [ listDst ] = sommetAccessible( src, A )
     %%src
     
     listDst = {};
-    
     for (i = 1:length(A))
         if (strcmp(src,A{i}.src))
             listDst{end+1} = A{i}.dst;
         end
     end
-    
+    listDst = unique(listDst);
 end
 
