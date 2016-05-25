@@ -275,7 +275,7 @@ function [ listV ] = DMDecomp(entree, tabNoeud )
     for( i = 1:length(totArc2))
        for (j = 1:length(totArc))
           if (strcmp(totArc2{i}.src,totArc{j}.dst) && strcmp(totArc2{i}.dst,totArc{j}.src))
-             Vi{end+1} = totArc2{i};
+             Vi{end+1} = totArc2{i}
           end
        end
     end

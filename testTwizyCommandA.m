@@ -14,13 +14,41 @@ function [printBool] = testTwizyCommandA(list)
     Alist{:};
     V = calculV(Alist);
 
-    res = couplageCompletCommand('A+',Alist,V);
+    res = DMDecomp('A',list);
     printBool = '';
-    for (i = 1:length(res))
-       printBool = strcat(printBool,printArc(res{i}),'ET');
+    resVi = {};
+    for (i = 3:length(res))
+       resVi{end+1} = res{i}; 
     end
-
+    
+    printTmp = {};
+    for (i = 1:2)
+        n = length(res{i});
+        for (j = 1:n)
+            printTmp{end+1} = res{i}{j};
+        end
+    end
+    
+    for (i = 1:2)
+        n=length(res{i});
+        for (j = 1:n)
+            for(k=1:length(resVi))
+                if (strcmp(res{i}{j}.dst(1:end-1),resVi{k}.dst(1:end-1)))
+                    printBool = strcat(printBool,'[',printArc(res{i}{j}),'OU',printArc(resVi{k}),']','ET');
+                    res{i}{j};
+                    printTmp = supprElement(printTmp,res{i}{j})
+                end
+            end
+        end
+    end
+        printTmp
+        for (i = 1:length(printTmp))
+            printBool = strcat(printBool,printArc(printTmp{i}),'ET'); 
+        end
     printBool = printBool(1:end-2);
+    
+
+    Alist;
 end
 
 
