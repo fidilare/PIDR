@@ -14,7 +14,7 @@ function [printBool] = testTwizyCommandA(list)
     Alist{:};
     V = calculV(Alist);
 
-    res = DMDecomp('A',list)
+    res = DMDecomp('A',list);
     printBool = '';
     resVi = {};
     for (i = 3:length(res))

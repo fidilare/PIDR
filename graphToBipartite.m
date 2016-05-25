@@ -2,7 +2,7 @@ function [ BG ] = graphToBipartite( G )
     %%Fonction qui transforme un graph en graph bi Partie
     BG = {};
     if (strcmp(G{1}.src(end),'+'))
-       disp('Entrée déjà un graph bipartie')
+       BG = G;
        return
     end
     

@@ -27,9 +27,7 @@ function [ BM ] = couplageCompletCommand( entree,totArc )
             end
         end
         if (cmpt == length(V))
-            for ( i = 1:length(BM))
-                printBool = printArc(BM{i})
-            end
+            printBool = printArc(s
            return 
         end
         
